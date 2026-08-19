@@ -97,6 +97,34 @@ export default function TicketManager() {
     setSelectedIndex(-1);
   };
 
+  const handleDeleteTicket = async (ticketHash: string) => {
+    const confirmed = window.confirm("Delete this ticket? This cannot be undone.");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch("/api/tickets", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticketHash }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to delete ticket");
+      }
+
+      setTickets((current) => current.filter((ticket) => ticket.ticketHash !== ticketHash));
+
+      if (form.ticketHash === ticketHash) {
+        setForm(emptyTicket());
+        setSelectedIndex(-1);
+      }
+    } catch (err) {
+      console.error("failed to delete ticket:", err);
+      window.alert(err instanceof Error ? err.message : "Failed to delete ticket");
+    }
+  };
+
   return (
     <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
       <div className="rounded-[28px] border border-slate-200/50 bg-white px-6 py-6 text-slate-900 shadow-sm">
@@ -120,33 +148,45 @@ export default function TicketManager() {
 
         <div className="mt-6 space-y-3">
           {tickets.map((ticket, index) => (
-            // <button
-            //   key={`${ticket.ticketHash}-${index}`}
-            //   type="button"
-            //   onClick={() => router.push(`/${ticket.ticketHash}`)}
-            //   className={`block w-full rounded-3xl border px-4 py-4 text-left transition ${
-            //     index === selectedIndex ? 'border-slate-900 bg-slate-100' : 'border-slate-200 bg-white hover:border-slate-400'
-            //   }`}
-            // >
-            //   <p className="text-sm font-semibold text-slate-900">{ticket.eventName || 'Untitled ticket'}</p>
-            //   <p className="mt-1 text-xs text-slate-500">{ticket.ticketHash}</p>
-            // </button>
-            <Link
+            <div
               key={`${ticket.ticketHash}-${index}`}
-              href={`/${ticket.ticketHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block w-full rounded-3xl border px-4 py-4 text-left transition ${
+              className={`flex items-center gap-3 rounded-3xl border px-3 py-3 transition ${
                 index === selectedIndex
                   ? "border-slate-900 bg-slate-100"
                   : "border-slate-200 bg-white hover:border-slate-400"
               }`}
             >
-              <p className="text-sm font-semibold text-slate-900">
-                {ticket.eventName || "Untitled ticket"}
-              </p>
-              <p className="mt-1 text-xs text-slate-500">{ticket.ticketHash}</p>
-            </Link>
+              <Link
+                href={`/${ticket.ticketHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-w-0 flex-1 text-left"
+              >
+                <p className="text-sm font-semibold text-slate-900">
+                  {ticket.eventName || "Untitled ticket"}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">{ticket.ticketHash}</p>
+              </Link>
+
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  handleDeleteTicket(ticket.ticketHash);
+                }}
+                aria-label={`Delete ${ticket.ticketHash}`}
+                title="Delete ticket"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4h8v2" />
+                  <path d="M19 6l-1 14H6L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                </svg>
+              </button>
+            </div>
           ))}
           {tickets.length === 0 && (
             <p className="text-sm text-slate-500">No tickets saved yet.</p>
