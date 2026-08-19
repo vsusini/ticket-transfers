@@ -1,5 +1,3 @@
-import tickets from '../data/tickets.json';
-
 export type TicketData = {
   ticketHash: string;
   eventName: string;
@@ -12,13 +10,3 @@ export type TicketData = {
   notice: string;
   pageNumber: string;
 };
-
-export const seedTickets = tickets as TicketData[];
-
-export function getTicket(ticketHash: string) {
-  return seedTickets.find((ticket) => ticket.ticketHash === ticketHash);
-}
-
-export function getAllTickets() {
-  return seedTickets;
-}
