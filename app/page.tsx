@@ -10,7 +10,7 @@ export default function HomePage() {
             Ticket Transfers
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            A simple admin starter for creating and previewing white ticket templates. Use this app to manage a ticket record and view the sample ticket instantly.
+            A simple admin starter for creating and previewing tickets. Use this app to manage a ticket record and view the ticket instantly.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <Link
@@ -25,21 +25,6 @@ export default function HomePage() {
             >
               View Sample Ticket
             </Link>
-          </div>
-        </section>
-
-        <section className="grid gap-6 sm:grid-cols-2">
-          <div className="rounded-[24px] border border-slate-200 bg-white px-6 py-6">
-            <h2 className="text-xl font-semibold text-slate-950">Built for Vercel</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              This app is ready to deploy as a static Next.js site with App Router and Tailwind CSS.
-            </p>
-          </div>
-          <div className="rounded-[24px] border border-slate-200 bg-white px-6 py-6">
-            <h2 className="text-xl font-semibold text-slate-950">Easy future growth</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Add ticket templates, save them to JSON, and render live previews with the same white ticket style.
-            </p>
           </div>
         </section>
       </div>
