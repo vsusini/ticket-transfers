@@ -60,7 +60,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
             <div className="mx-auto max-w-4xl rounded-b-[12px] border border-slate-200 bg-white px-3 pb-20 pt-6 shadow-sm sm:px-6 sm:pt-10">
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center w-full">
-                  <div className="barcode-container relative w-full max-w-[300px] overflow-hidden bg-white">
+                  <div className="barcode-container relative w-full max-w-[275px] overflow-hidden bg-white">
                     <img
                       src={barcodeDataUrl}
                       alt={`PDF417 barcode for ticket ${ticket.ticketHash}`}
